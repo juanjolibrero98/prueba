@@ -1,0 +1,16 @@
+<div class="p-6 bg-gray-100 relative rounded shadow">
+  <button (click)="close()" type="button" class="absolute top-3 right-3 focus:outline-none p-2">
+    <fa-icon [icon]="faClose"></fa-icon>
+  </button>
+  <div class="flex w-full gap-4">
+    <div class="flex space-x-2 mb-5 w-6/6 font-semibold">
+      Avatar Profile
+    </div>
+  </div>
+  <div class="flex w-full gap-4">
+    <div class="flex space-x-2 mb-5 w-6/6">
+      <img class="w-100 h-100 rounded" [src]="avatar" alt="" />
+    </div>
+  </div>
+  <button style="display: none;" class="btn-prb" (click)="pruebaClick()">Prueba: {{ hola }}</button>
+</div>

@@ -1,0 +1,72 @@
+<div class="p-6 bg-gray-100 relative rounded shadow">
+  <button (click)="close()" type="button" class="absolute top-3 right-3 focus:outline-none p-2">
+    <fa-icon [icon]="faClose"></fa-icon>
+  </button>
+  <div *ngIf="!updateCardDetail" class="flex space-x-2 mb-5">
+    <fa-icon class="text-gray-800" [icon]="faCheckToSlot"></fa-icon>
+    <div class="flex flex-col">
+      <h3 class="text-lg font-semibold text-gray-800">{{ card.title }}</h3>
+      <p class="text-sm text-gray-500">in list {{ listTitle }}</p>
+    </div>
+  </div>
+  <div *ngIf="!updateCardDetail" class="flex w-full gap-4">
+    <div class="flex space-x-2 mb-5 w-4/6">
+      <fa-icon class="text-gray-800" [icon]="faBars"></fa-icon>
+      <div class="flex flex-col">
+        <h3 class="text-lg font-semibold text-gray-800">Description</h3>
+        <p class="text-sm text-gray-500">{{ card.description }}</p>
+      </div>
+    </div>
+    <div class="flex flex-auto space-y-2 flex-col">
+      <app-btn typeBtn="button" color="light">
+        <span class="flex space-x-2 text-left">
+          <fa-icon class="text-gray-800" [icon]="faUser"></fa-icon>
+          <span>Members</span>
+        </span>
+      </app-btn>
+      <app-btn typeBtn="button" color="light">
+        <span class="flex space-x-2 text-left">
+          <fa-icon class="text-gray-800" [icon]="faTag"></fa-icon>
+          <span>Labels</span>
+        </span>
+      </app-btn>
+      <app-btn typeBtn="button" color="light" (click)="updateCardDetail = !updateCardDetail">
+        <span class="flex space-x-2 text-left">
+          <fa-icon class="text-gray-800" [icon]="faPenToSquare"></fa-icon>
+          <span>Update</span>
+        </span>
+      </app-btn>
+    </div>
+  </div>
+  <div *ngIf="updateCardDetail">
+    <div class="flex justify-center">
+      <h3 class="text-lg px-4 py-4 font-semibold text-gray-800">Update Card</h3>
+    </div>
+
+    <form [formGroup]="form" novalidate class="space-y-4" (ngSubmit)="updateCard(card.id)">
+      <div>
+        <b>Card title</b><span class="text-red-600">*</span>
+        <div class="relative">
+          <input
+            formControlName="title"
+            placeholder="Enter title"
+            type="text"
+            class="w-full rounded bg-gray-100 border-gray-300 border-2"
+          />
+        </div>
+      </div>
+      <div>
+        <b>Card Description</b><span class="text-red-600">*</span>
+        <div class="relative">
+          <textarea formControlName="description"
+          placeholder="Enter description"
+          type="text"
+          class="w-full rounded bg-gray-100 border-gray-300 border-2"></textarea>
+        </div>
+      </div>
+      <div>
+        <app-btn typeBtn="submit" color="primary"> Update </app-btn>
+      </div>
+    </form>
+  </div>
+</div>

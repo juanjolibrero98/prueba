@@ -1,0 +1,85 @@
+<div class="w-full h-full px-4 pb-4" [ngClass]="backgroundColor">
+  <div class="flex flex-col h-full">
+    <div>
+      <h2 class="text-xl font-bold text-white my-4 cursor-pointer" (click)="openDialogBoard(board)">
+        {{ board?.title }}
+      </h2><!--titulo del board-->
+    </div>
+    <!--cdkDropListGroup para poder transferir las tareas entre columnas
+          shrink-0 para que respete el ancho y no contraiga en flexbox-->
+    <div class="flex grow items-start w-full h-full overflow-x-scroll pb-16" cdkDropListGroup>
+      <div class="rounded-[15px] bg-gray-200 w-72 p-2 mr-3 shrink-0" *ngFor="let list of board?.lists"><!--cada lista del board-->
+        <div class="flex justify-between py-1">
+          <h3 class="text-sm font-bold ml-2 text-gray-700">{{ list.title }}</h3>
+          <h3 class="text-sm font-bold ml-2 px-2">
+            <fa-icon [icon]="faEllipsis"></fa-icon>
+          </h3>
+        </div>
+
+        <!--onmousedown="haceclick()"
+            onmouseup="haceclickSuelta()"-->
+        <!--cdkDrag es la directiva que permite mover los div de sitio
+            cdkdroplist y el resto es lo que hace que no permite mover los div fuera de las listas, y que
+            se mantengan dentro del listado, asi no puede moverlo por toda la web
+            [cdkDropListData] indica que va a usar esa lista aqui-->
+        <!--[id]="list.id" para asignar al container(lista) el id que tiene === a la BD-->
+        <!--cada card de la lista-->
+        <div class="text-sm mt-2 min-h-[2.5rem]" [id]="list.id" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="list.cards">
+          <div
+            (click)="openDialog(card, list.title)"
+            *ngFor="let card of list.cards"
+            cdkDrag
+            class="bg-white cursor-grab text-gray-700 shadow p-2 rounded-[10px] mt-2 border-b border-x-gray-300 hover:bg-gray-200 hover:border hover:border-gray-300"
+          >
+            {{ card.title }}
+          </div>
+        </div>
+
+        <div class="mt-5"><!--cada boton crear de cada lista-->
+          <app-btn *ngIf="!list.showCardForm" color="lightCard" (click)="openFormCard(list)">
+            <div class="flex justify-between py-1">
+              <span><fa-icon [icon]="faPlus"></fa-icon> Add a card</span>
+              <h3 class="text-sm font-bold ml-2 px-2">
+                <fa-icon [icon]="faImages"></fa-icon>
+              </h3>
+            </div>
+          </app-btn>
+          <div class="w-full" *ngIf="list.showCardForm">
+            <textarea [formControl]="inputCard" class="w-full rounded text-xs border-b-gray-400 border-b-2" placeholder="Enter a title for this card..."></textarea>
+            <div class="flex space-x-2 justify-between">
+              <app-btn color="primary" (click)="createCard(list)">
+               Add card
+              </app-btn>
+              <app-btn color="lightCard" (click)="closeCardForm(list)">
+                <fa-icon [icon]="faClose"></fa-icon>
+              </app-btn>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="shrink-0"><!--boton crear lista-->
+        <app-btn *ngIf="!showListForm" color="lightList" (click)="showListForm = !showListForm">
+          <fa-icon [icon]="faPlus"></fa-icon> Add another list
+        </app-btn>
+        <div class="w-72 rounded-[10px] bg-gray-200 p-2 mr-3 shrink-0" *ngIf="showListForm">
+          <div class="flex justify-between py-1">
+            <h3 class="text-sm font-bold ml-2">Add another list</h3>
+            <h3 class="text-sm font-bold ml-2 px-2">
+              <fa-icon [icon]="faEllipsis"></fa-icon>
+            </h3>
+          </div>
+          <textarea [formControl]="inputList" class="w-full rounded text-xs border-b-gray-400 border-b-2" placeholder="Enter a title for this list..."></textarea>
+          <div class="flex space-x-2 justify-between">
+            <app-btn color="primary" (click)="addList()">Add List</app-btn>
+            <app-btn color="lightCard" (click)="closeListForm()">
+              <fa-icon [icon]="faClose"></fa-icon>
+            </app-btn>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

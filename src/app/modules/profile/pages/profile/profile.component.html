@@ -1,0 +1,274 @@
+<div>
+  <div class="container mx-auto my-5 p-5">
+    <div class="md:flex no-wrap md:-mx-2">
+      <!-- Left Side -->
+      <div class="w-full md:w-3/12 md:mx-2">
+        <!-- Profile Card -->
+        <div class="bg-white p-3 border-t-4 border-green-400">
+          <div class="image overflow-hidden">
+            <img
+              class="h-auto w-full mx-auto"
+              src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
+              alt=""
+            />
+          </div>
+          <h1 class="text-gray-900 font-bold text-xl leading-8 my-1">
+            {{ meProfile?.name }}
+          </h1>
+          <h3 class="text-gray-600 font-lg text-semibold leading-6">
+            Lorem Company Inc.
+          </h3>
+          <p class="text-sm text-gray-500 hover:text-gray-600 leading-6">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Reprehenderit, eligendi dolorum sequi illum qui unde aspernatur non
+            deserunt
+          </p>
+          <ul
+            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm"
+          >
+            <li class="flex items-center py-3">
+              <span>Status</span>
+              <span class="ml-auto"
+                ><span class="bg-green-500 py-1 px-2 rounded text-white text-sm"
+                  >Active</span
+                ></span
+              >
+            </li>
+            <li class="flex items-center py-3">
+              <span>Member since</span>
+              <span class="ml-auto">{{ meProfile?.creationAt | date: 'medium' }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="my-4"></div>
+      </div>
+      <!-- Right Side about info user -->
+      <div *ngIf="!updateInfoUser" class="w-full md:w-9/12 mx-2 h-64">
+        <!-- About Section -->
+        <div class="bg-white p-3 shadow-sm rounded-sm">
+          <div
+            class="flex items-center space-x-2 font-semibold text-gray-900 leading-8"
+          >
+            <span clas="text-green-500">
+              <fa-icon [icon]="faUser"></fa-icon>
+            </span>
+            <span class="tracking-wide">About</span>
+          </div>
+          <div class="text-gray-700">
+            <div class="grid md:grid-cols-2 text-sm">
+              <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">Name</div>
+                <div class="px-4 py-2">{{ meProfile?.name }}</div>
+              </div>
+
+              <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">Email.</div>
+                <div class="px-4 py-2">
+                  <a class="text-blue-800">{{ meProfile?.email }}</a>
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">Avatar</div>
+                <div class="px-4 py-2">
+                  <img
+                    class="w-10 h-10 rounded cursor-pointer"
+                    (click)="openDialog(meProfile?.avatar)"
+                    [src]="meProfile?.avatar"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <div class="grid grid-cols-2">
+                <div class="px-4 py-2 font-semibold">Last update</div>
+                <div class="px-4 py-2">{{ meProfile?.updatedAt | date: 'medium' }}</div>
+              </div>
+            </div>
+          </div>
+          <button
+            class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"
+            (click)="updateInfoUser = !updateInfoUser"
+          >
+            Update Information
+          </button>
+        </div>
+        <div class="my-4"></div>
+      </div>
+
+      <!--right side update info user-->
+      <div *ngIf="updateInfoUser" class="w-full md:w-9/12 mx-2 h-64">
+        <div class="bg-white p-3 shadow-sm rounded-sm">
+          <div class="flex justify-end px-6"><!--icono x cerrar update user-->
+            <fa-icon
+              class="cursor-pointer"
+              [icon]="faClose"
+              (click)="updateInfoUser = !updateInfoUser"
+            ></fa-icon>
+          </div>
+          <div
+            class="flex items-center space-x-2 font-semibold text-gray-900 leading-8"
+          >
+            <span clas="text-green-500">
+              <fa-icon [icon]="faUserEdit"></fa-icon>
+            </span>
+            <span class="tracking-wide">Update profile</span>
+          </div>
+          <form [formGroup]="form" novalidate class="space-y-4" (ngSubmit)="updateProfile()">
+            <div>
+              <b>Name</b><span class="text-red-600">*</span>
+              <div class="relative">
+                <input
+                  formControlName="name"
+                  [placeholder]="meProfile?.name"
+                  type="text"
+                  class="w-full rounded bg-gray-100 border-gray-300 border-2"
+                />
+              </div>
+            </div>
+            <div>
+              <b>Email</b><span class="text-red-600">*</span>
+              <div class="relative">
+                <input
+                  formControlName="email"
+                  [placeholder]="meProfile?.email"
+                  type="email"
+                  class="w-full pl-10 pr-4 py-2 rounded bg-gray-100 border-gray-300 border-2"
+                />
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><!--para poner icono email delante del input-->
+                    <fa-icon class="text-gray-400" [icon]="faEnvelope"></fa-icon>
+                </div>
+              </div>
+            </div>
+            <div><!--https://flowbite.com/docs/forms/radio/-->
+              <div class="w-full">
+                <b>Avatar</b><span class="text-red-600">*</span>
+              </div>
+              <div class="w-full">
+                <em class="text-sm">Select a type of avatar</em>
+              </div>
+              <div class="flex flex-wrap">
+                <div class="flex items-center mr-4">
+                  <input
+                    id="game-radio"
+                    type="radio"
+                    value="game"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="game-radio" (mouseenter)="mouseOver('game')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/game?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    id="ai-radio"
+                    type="radio"
+                    value="ai"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="ai-radio" (mouseenter)="mouseOver('ai')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/ai?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    id="face-radio"
+                    type="radio"
+                    value="face"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="face-radio" (mouseenter)="mouseOver('face')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/face?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    id="movie-radio"
+                    type="radio"
+                    value="movie"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="movie-radio" (mouseenter)="mouseOver('movie')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/movie?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    id="crm-radio"
+                    type="radio"
+                    value="crm"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="crm-radio" (mouseenter)="mouseOver('crm')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/crm?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+                <div class="flex items-center mr-4">
+                  <input
+                    id="book-radio"
+                    type="radio"
+                    value="book"
+                    name="avatar"
+                    formControlName="avatar"
+                    class="hidden peer"
+                  />
+                  <label
+                    for="book-radio" (mouseenter)="mouseOver('book')" (mouseleave)="mouseOut()"
+                    class="inline-flex items-center justify-center w-8 h-8 text-transparent rounded cursor-pointer hover:bg-transparent peer-checked:text-white"
+                    >
+                    <img src="https://api.lorem.space/image/book?w=480&h=480&r=4454"/>
+                    <fa-icon class="absolute" [icon]="faCheck"></fa-icon>
+                  </label>
+                </div>
+              </div>
+              <div class="w-full pb-4"><!--div para info tipo avatar-->
+                <em *ngIf="avatarTypeDiv" class="text-sm absolute">Avatar type: {{ typeAvatar }}</em>
+              </div>
+            </div>
+            <div>
+              <app-btn typeBtn="submit" color="success"> Update </app-btn>
+            </div>
+          </form>
+        </div>
+        <div class="my-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <link
+    href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+  <script
+    src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+    defer
+  ></script>
+</div>
